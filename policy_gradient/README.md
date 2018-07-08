@@ -12,7 +12,7 @@ How it works:
 2. Compute the forward pass and predict an action
 3. Assume that action is correct and compute gradient with the backward pass
 4. Get the reward for that action
-5. Multiply it with rewards
+5. Multiply rewards with gradient and make the update
 
 
 
