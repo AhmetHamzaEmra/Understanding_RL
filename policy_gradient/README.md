@@ -23,11 +23,8 @@ So if the reward is positive that means we did something good and make update ac
 Sample Code:
 
 [Policy Gradient from scratch](https://github.com/AhmetHamzaEmra/Understanding_RL/blob/master/policy_gradient/Understanding%20Policy%20Gradient%20.ipynb)
-<<<<<<< HEAD
 
 Policy Gradient with Tenserflow (#ToDo)
-=======
->>>>>>> 5b4542a62750b96443204874e04807b420393be2
 
 
 
