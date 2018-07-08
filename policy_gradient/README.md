@@ -22,7 +22,7 @@ So if the reward is positive that means we did something good and make update ac
 
 Sample Code:
 
-[Policy Gradient from scratch](Understanding Policy Gradient.ipynb)
+[Policy Gradient from scratch](Understanding Policy Gradient .ipynb)
 
 
 
