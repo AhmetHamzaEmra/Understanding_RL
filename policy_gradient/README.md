@@ -34,4 +34,10 @@ Readings :
 
 2. Hands-On Machine Learning with Scikit-Learn and TensorFlow Chapter 16
 
+3. [Continuous control with deep reinforcement learning](https://arxiv.org/abs/1509.02971)
+
+4. [Better Exploration with Parameter Noise](https://blog.openai.com/better-exploration-with-parameter-noise/)
+
    
+
+    

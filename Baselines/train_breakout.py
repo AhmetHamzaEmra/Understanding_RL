@@ -16,24 +16,19 @@ def main():
     # initialize the model 
     # image input so cnn 
     # convs = [n_outputs, karnel_size, stride]
-    model = deepq.models.cnn_to_mlp(convs=[(32,8,4), (64,4,2), (64,3,1)], hiddens=[128,64])
+    model = deepq.models.cnn_to_mlp(convs=[(32,3,1),(32,3,1)], hiddens=[256])
     # train the model
     act = deepq.learn(
         env,
         q_func=model,
         lr=1e-2,
         # number of iteration to optimizer for
-        max_timesteps=100000,
-        buffer_size=10000,
+        max_timesteps=10000,
+        buffer_size=1000,
         # fraction of entire training period over which the exploration rate is annealed
         exploration_fraction=0.1,
         # final value of random action probability
         exploration_final_eps=0.01,
-        train_freq=4,
-        learning_starts=10000,
-        target_network_update_freq=1000,
-        prioritized_replay=True,
-        prioritized_replay_alpha=0.6,
         print_freq=10
     )
     print("Saving model to breakout_model.pkl")
