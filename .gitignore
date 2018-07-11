@@ -80,11 +80,4 @@ target/
 .DS_Store
 .ipynb_checkpoints
 
-# Other Data
-.fastq
-.fasta
-<<<<<<< HEAD
-.first1000.fastq
-=======
-.first1000.fastq
->>>>>>> 5b4542a62750b96443204874e04807b420393be2
+models/
