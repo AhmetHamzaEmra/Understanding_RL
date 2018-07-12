@@ -24,7 +24,9 @@ Sample Code:
 
 [Policy Gradient from scratch](https://github.com/AhmetHamzaEmra/Understanding_RL/blob/master/policy_gradient/Understanding%20Policy%20Gradient%20.ipynb)
 
-Policy Gradient with Tenserflow (#ToDo)
+[Policy Gradient with Tenserflow](https://github.com/AhmetHamzaEmra/Understanding_RL/blob/master/policy_gradient/PG_Tensorflow.ipynb)
+
+![](https://github.com/AhmetHamzaEmra/Understanding_RL/blob/master/policy_gradient/lunar.gif)
 
 
 
