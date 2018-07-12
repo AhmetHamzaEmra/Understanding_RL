@@ -7,7 +7,7 @@ env = gym.make('LunarLander-v2')
 obs = env.reset()
 
 n_inputs = 8
-n_hidden = 32
+n_hidden = 16
 n_outputs = 4
 
 learning_rate = 0.001
@@ -26,7 +26,7 @@ action = tf.squeeze(tf.multinomial(logits, num_samples=1), axis=-1)
 saver = tf.train.Saver()
 
 with tf.Session() as sess:
-    saver.restore(sess, "./my_policy_net_pg.ckpt")
+    saver.restore(sess, "./models/my_policy_net_pg.ckpt")
     for i in range(5):
         obs = env.reset()
         game_score = 0
