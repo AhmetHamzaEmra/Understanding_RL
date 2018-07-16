@@ -1,2 +1,3 @@
-model_checkpoint_path: "my_policy_net_pg.ckpt"
-all_model_checkpoint_paths: "my_policy_net_pg.ckpt"
+model_checkpoint_path: "my_bipedal_walker_pg.ckpt"
+all_model_checkpoint_paths: "best_walker.ckpt"
+all_model_checkpoint_paths: "my_bipedal_walker_pg.ckpt"
