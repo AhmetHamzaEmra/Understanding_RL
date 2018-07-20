@@ -7,7 +7,7 @@ from itertools import product
 env = gym.make('BipedalWalkerHardcore-v2')
 obs = env.reset()
 
-possible_torques = np.array([-1.0,-0.5, 0.0, 0.5, 1.0])
+possible_torques = np.array([-1.0,0.0, 1.0])
 possible_actions = np.array(list(product(possible_torques, possible_torques, possible_torques, possible_torques)))
 
 
@@ -34,7 +34,7 @@ action_index = tf.squeeze(tf.multinomial(logits, num_samples=1), axis=-1)
 saver = tf.train.Saver()
 
 with tf.Session() as sess:
-    saver.restore(sess, "./models/my_bipedal_walker_pg.ckpt")
+    saver.restore(sess, "./models/best_walker.ckpt")
     for i in range(5):
         obs = env.reset()
         game_score = 0

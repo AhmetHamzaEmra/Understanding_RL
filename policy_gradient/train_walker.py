@@ -5,10 +5,10 @@ import tensorflow as tf
 from itertools import product
 import matplotlib.pyplot as plt
 
-env = gym.make('BipedalWalkerHardcore-v2')
+env = gym.make('BipedalWalker-v2')
 obs = env.reset()
 
-possible_torques = np.array([-1.0,-0.5, 0.0, 0.5, 1.0])
+possible_torques = np.array([-1.0, 0.0, 1.0])
 possible_actions = np.array(list(product(possible_torques, possible_torques, possible_torques, possible_torques)))
 
 
