@@ -12,12 +12,13 @@ import numpy as np
 import random
 import gym
 import numpy as np
-from collections import deque
+from collections import namedtuple, deque
 import torch
 from torch import nn
 import torch.nn.functional as F
 
 EPISODES = 1000
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class agent_network(nn.Module):
     def __init__(self, state_size, action_size):
@@ -34,6 +35,43 @@ class agent_network(nn.Module):
         x = self.fc3(x)
         return x
     
+class ReplayBuffer:
+    """Fixed-size buffer to store experience tuples."""
+
+    def __init__(self, action_size, buffer_size, batch_size):
+        """Initialize a ReplayBuffer object.
+        Params
+        ======
+            action_size (int): dimension of each action
+            buffer_size (int): maximum size of buffer
+            batch_size (int): size of each training batch
+            seed (int): random seed
+        """
+        self.action_size = action_size
+        self.memory = deque(maxlen=buffer_size)  
+        self.batch_size = batch_size
+        self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
+    
+    def add(self, state, action, reward, next_state, done):
+        """Add a new experience to memory."""
+        e = self.experience(state, action, reward, next_state, done)
+        self.memory.append(e)
+    
+    def sample(self):
+        """Randomly sample a batch of experiences from memory."""
+        experiences = random.sample(self.memory, k=self.batch_size)
+
+        states = torch.from_numpy(np.vstack([e.state for e in experiences if e is not None])).float().to(device)
+        actions = torch.from_numpy(np.vstack([e.action for e in experiences if e is not None])).long().to(device)
+        rewards = torch.from_numpy(np.vstack([e.reward for e in experiences if e is not None])).float().to(device)
+        next_states = torch.from_numpy(np.vstack([e.next_state for e in experiences if e is not None])).float().to(device)
+        dones = torch.from_numpy(np.vstack([e.done for e in experiences if e is not None]).astype(np.uint8)).float().to(device)
+  
+        return (states, actions, rewards, next_states, dones)
+
+    def __len__(self):
+        """Return the current size of internal memory."""
+        return len(self.memory)
 
 
 
@@ -54,7 +92,8 @@ class DQN(nn.Module):
         self.epsilon_min = epsilon_min
         self.gamma = gamma
         
-        self.memory = deque(maxlen=2000)
+        self.memory = ReplayBuffer(action_size, buffer_size=2000, batch_size=32)
+
         self.model = agent_network(state_size, action_size)
         self.target_network = agent_network(state_size, action_size)
         self.criterion = nn.MSELoss()
@@ -65,10 +104,10 @@ class DQN(nn.Module):
         if np.random.rand() <= self.epsilon:
             return random.randrange(self.action_size)
         else:
-            return torch.argmax(self.model.forward(x))
+            return np.argmax(self.model.forward(x).cpu().data.numpy())
 
     def remember(self, state, action, reward, next_state, done):
-        self.memory.append((state, action, reward, next_state, done))
+        self.memory.add(state, action, reward, next_state, done)
 
     def soft_update(self, model, target_model, tau):
         for target_param, model in zip(target_model.parameters(), model.parameters()):
@@ -96,11 +135,11 @@ if __name__ == "__main__":
         episode_reward = 0 
         while not done:
             # sample an action 
+            state = torch.from_numpy(state).float().to(device)
             action = dqn.sample_action(state)
-            print(action)
             # get the observation
             next_state, reward, done, _ = env.step(action)
-            reward = reward if not done else -10
+            # reward = reward if not done else -10
             episode_reward += reward
             next_state = np.reshape(next_state, [1, state_size])
             # save the observation into memory 
@@ -108,18 +147,23 @@ if __name__ == "__main__":
             state = next_state
 
             if len(dqn.memory) > batch_size:
-                minibatch = random.sample(dqn.memory, batch_size)
-                for state, action, reward, next_state, done in minibatch:
-                    target = dqn.model.forward(state)
-                    if done:
-                        target[0][action] = reward
-                    else:
-                        t = dqn.target_network.forward(next_state)[0]
-                        target[0][action] = reward + dqn.gamma * np.amax(t)
-                    loss = dqn.criterion(state, target)
-                    loss.backward()
-                    dqn.optimizer.step()
-                if dqn.epsilon > self.epsilon_min:
+                states, actions, rewards, next_states, dones = dqn.memory.sample()
+                # Get max predicted Q values (for next states) from target model
+                Q_targets_next = dqn.target_network(next_states).detach().max(1)[0].unsqueeze(1)
+                # Compute Q targets for current states 
+                Q_targets = rewards + (dqn.gamma * Q_targets_next * (1 - dones))
+
+                # Get expected Q values from local model
+                Q_expected = dqn.model(states).gather(1, actions)
+                # Compute loss
+                loss = dqn.criterion(Q_expected, Q_targets)
+                # Minimize the loss
+                dqn.optimizer.zero_grad()
+                loss.backward()
+                dqn.optimizer.step()
+
+
+                if dqn.epsilon > dqn.epsilon_min:
                     dqn.epsilon *= dqn.epsilon_decay
 
         if e % 10 == 0:
