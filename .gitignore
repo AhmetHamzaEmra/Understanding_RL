@@ -79,5 +79,7 @@ target/
 # Other stuff that I don't like to see
 .DS_Store
 .ipynb_checkpoints
+.vscode
+.vscode/
 
 models/
