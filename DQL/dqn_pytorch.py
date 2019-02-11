@@ -16,7 +16,14 @@ import matplotlib.pyplot as plt
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class agent_network(nn.Module):
+    """ Neural network for the agent """
     def __init__(self, state_size, action_size):
+        """
+        Params
+        ======
+        state_size = number of features returned by the env
+        action_size = posible actions in the env
+        """
         super(agent_network, self).__init__()
         hidden = 128
         self.fc1 = nn.Linear(state_size, hidden)
@@ -48,11 +55,12 @@ class ReplayBuffer:
         self.batch_size = batch_size
         self.experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
     
-    def add(self, state, action, reward, next_state, done):
+    def add(self, memo):
         """Add a new experience to memory."""
-        e = self.experience(state, action, reward, next_state, done)
-        self.memory.append(e)
-    
+        for state, action, reward, next_state, done in memo:
+            e = self.experience(state, action, reward, next_state, done)
+            self.memory.append(e)
+        
     def sample(self):
         """Randomly sample a batch of experiences from memory."""
         experiences = random.sample(self.memory, k=self.batch_size)
@@ -72,6 +80,19 @@ class ReplayBuffer:
 
 
 class DQN(nn.Module):
+    """
+    Where the magics happens
+    Params:
+    =======
+    state_size = number of features given by env
+    action_size = number of posible actions 
+    epsilon = randomness posiblity on the start 
+    epsilon_decay = how much should it decay in every step
+    epsilon_min = minimum randomness for training 
+    gamma = how much future reward should model care
+    learning_rate = step size in traning 
+    
+    """
     def __init__(self, state_size,
     action_size, 
     epsilon=1.0,
@@ -104,15 +125,25 @@ class DQN(nn.Module):
         else:
             return np.argmax(self.model.forward(x).cpu().data.numpy())
 
-    def remember(self, state, action, reward, next_state, done):
-        self.memory.add(state, action, reward, next_state, done)
+    def remember(self, memo):
+        """ Add the episode memory to general memory"""
+        self.memory.add(memo)
 
     def soft_update(self, tau=1):
+        """
+        Copy parameters of model to target network, 
+        Params
+        ======
+        Tau: How much you should depend in the new paramters
+        """
+
         for target_param, model in zip(self.target_network.parameters(), self.model.parameters()):
             target_param.data.copy_(tau*model.data + (1.0-tau)*target_param.data)
 
     def train_step(self):
-
+        """
+        Makes a gradient update to parameters from its memory
+        """
         self.optimizer.zero_grad()
 
         states, actions, rewards, next_states, dones = self.memory.sample()
@@ -134,11 +165,31 @@ class DQN(nn.Module):
             self.epsilon *= self.epsilon_decay
 
     def act(self, x):
+        """
+        Get the best q value for given state x 
+        return best posible action
+        """
         return np.argmax(self.target_network.forward(x).cpu().data.numpy())
 
     def save_model(self, path):
+        """
+        Save model to path
+        """
         torch.save(self.target_network, path)
 
     def load_model(self, path):
+        """
+        Load model from checkpoint path
+        """
         self.model = torch.load(path)
         self.target_network = torch.load(path)
+
+    def dr(self, rewards, gamma):
+        """
+        Discound the rewards
+        """
+        for i, v in enumerate(rewards):
+            for j in range(i+1, len(rewards)):
+                rewards[i] += gamma**(j-i)*rewards[j]
+
+        return rewards  

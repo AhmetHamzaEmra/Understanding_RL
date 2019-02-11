@@ -21,7 +21,7 @@ if __name__ == "__main__":
     dqn = DQN(state_size, action_size)
     batch_size = 32
     scores = []
-    dqn.load_model("checkpoint.pth")
+    dqn.load_model("checkpointpole.pth")
 
     ### TESTING ###
     print("\nTESTING\n")
@@ -42,4 +42,5 @@ if __name__ == "__main__":
 
         print("Test case number {}, episode reward {}".format(t, episode_reward))
 
+    
     env.close()

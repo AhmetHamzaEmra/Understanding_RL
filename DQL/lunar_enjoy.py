@@ -19,10 +19,10 @@ if __name__ == "__main__":
     env = gym.make('LunarLander-v2')
     state_size = env.observation_space.shape[0]
     action_size = env.action_space.n
-    dqn = DQN(state_size, action_size)
+    dqn = DQN(state_size, action_size, epsilon_min=0.01)
     batch_size = 32
     scores = []
-    dqn.load_model("173.37600943957153__lunar_checkpoint.pth")
+    dqn.load_model("61lunar_checkpoint.pth")
 
     ### TESTING ###
     print("\nTESTING\n")
