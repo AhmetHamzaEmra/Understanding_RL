@@ -1,21 +1,21 @@
 """
-Test case for DQN pytroch!
+
 CartPole-v0
 
 """
 import numpy as np
 import gym
 import torch
-from dqn_pytorch import DQN
+from dueling_dqn import DDQN
 from collections import deque
 
-EPISODES = 20
+EPISODES = 10
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 env = gym.make('CartPole-v0')
 state_size = env.observation_space.shape[0]
 action_size = env.action_space.n
-dqn = DQN(state_size, action_size, epsilon_min=0.05, learning_rate=0.03)
+dqn = DDQN(state_size, action_size, epsilon_min=0.05, learning_rate=0.03)
 batch_size = 40
 gamma = 0.9
 scores = deque(maxlen=100)
@@ -62,11 +62,6 @@ for e in range(EPISODES):
                 dqn.save_model("checkpointpole.pth")
             print("episonde: {}/{}, score: {}, e: {:.2}".format(e,EPISODES, episode_reward+10, dqn.epsilon ))
 
-            if best_mean >= 195.0:
-                print("***SOLVED***")
-                print("Episode {}".format(e-100))
             break
 
-dqn.save_model("checkpointpole.pth")
-env.close()
 
