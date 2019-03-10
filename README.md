@@ -18,7 +18,7 @@ Since we are working with OpenAI's GYM alot, lets have better intuation about it
 
 ## Policy Gradient menthods 
 
-In supervised learning, it is simple to create a system that can easily map inputs X into outputs Y since there is a dataset which contains all input and output examples. On the other hand in Reinforcement learning, there are no datasets which contain examples just like datasets in supervised learning. Using Policy gradient is one way to solve this problem. The hole idea relly on encouraging the actions with good reward and discouraging the actions with bad reward. The general formula is minimizing the   $\sum_i A_i \log p(y_i \mid x_i) $  loss. In here $A_i$ represent Adventage and for most vanilla version we can use discounted rewards. 
+In supervised learning, it is simple to create a system that can easily map inputs X into outputs Y since there is a dataset which contains all input and output examples. On the other hand in Reinforcement learning, there are no datasets which contain examples just like datasets in supervised learning. Using Policy gradient is one way to solve this problem. The hole idea relly on encouraging the actions with good reward and discouraging the actions with bad reward. The general formula is minimizing the   ![](https://latex.codecogs.com/gif.latex?%5Csum_i%20A_i%20%5Clog%20p%28y_i%20%5Cmid%20x_i%29)  loss. In here $A_i$ represent Adventage and for most vanilla version we can use discounted rewards. 
 
 * [Policy gradient from scratch](https://github.com/AhmetHamzaEmra/Understanding_RL/blob/master/policy_gradient/Understanding%20Policy%20Gradient%20.ipynb)
 
