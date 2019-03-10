@@ -145,7 +145,7 @@ class DDQN(nn.Module):
         Get the best q value for given state x 
         return best posible action
         """
-        return np.argmax(self.target_network.forward(x).cpu().data.numpy())
+        return np.argmax(self.model.forward(x).cpu().data.numpy())
 
     def remember(self, memo):
         """ Add the episode memory to general memory"""

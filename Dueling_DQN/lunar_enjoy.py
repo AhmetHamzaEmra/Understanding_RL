@@ -22,7 +22,7 @@ if __name__ == "__main__":
     dqn = DDQN(state_size, action_size)
     batch_size = 32
     scores = []
-    dqn.load_model("61lunar_checkpoint.pth")
+    dqn.load_model("48lunar_checkpoint.pth")
 
     ### TESTING ###
     print("\nTESTING\n")
