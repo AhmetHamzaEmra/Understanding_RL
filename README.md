@@ -8,7 +8,9 @@ Deep Reinforcement Learning requires good amount of intuation in both deep learn
 
 ## OpenAI gym
 
-Since we are working with OpenAI's GYM alot, lets have better intuation about it! [OpenAi Gym enviroments](https://github.com/AhmetHamzaEmra/Understanding_RL/blob/master/openai_gym/Understanding%20Gym%20enviroments.ipynb)
+Since we are working with OpenAI's GYM alot, lets have better intuation about it! 
+
+[OpenAi Gym enviroments](https://github.com/AhmetHamzaEmra/Understanding_RL/blob/master/openai_gym/Understanding%20Gym%20enviroments.ipynb)
 
 ---
 
