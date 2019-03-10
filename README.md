@@ -26,7 +26,9 @@ In supervised learning, it is simple to create a system that can easily map inpu
 
   ![](https://raw.githubusercontent.com/AhmetHamzaEmra/Understanding_RL/master/policy_gradient/lunar.gif)
 
-* [Tensorflow v2.0]() 
+* [Tensorflow v2.0](https://github.com/AhmetHamzaEmra/Understanding_RL/blob/master/policy_gradient/PG_Tensorflow2_Walker.py) 
+
+  ![](https://cdn-images-1.medium.com/max/1600/1*p_S90VBL5k6L0dHPqzrd4Q.gif)
 
 * Pythorch *Coming Soon*
 
@@ -47,14 +49,6 @@ Extra resources:
 
 ## Deep Q Networks
 
-Before we start with DQN lets talk about Q function first. Q(s,a)​ is  a function that maps given ​s (state) and a(action) pair to expected total reward untile the terminal state. It is basicaly how much reward we are gonna gate if we act with action a in state s. The reason we combine this idea with NN is it is almost imposible to find  ​*q values* for all states in environment. 
+Before we start with DQN lets talk about Q function first. Q(s,a)​ is  a function that maps given s (state) and a(action) pair to expected total reward untile the terminal state. It is basicaly how much reward we are gonna gate if we act with action a in state s. The reason we combine this idea with NN is it is almost imposible to find  *q values* for all states in environment. 
 
  
-
-
-
-
-
-1. [DQN](DeepQ)
-2. [Baselines](Baselines)
-
